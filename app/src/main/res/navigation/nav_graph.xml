@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcome_fragment">
+
+    <fragment
+        android:id="@+id/welcome_fragment"
+        android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.Welcome_Fragment"
+        android:label="welcome_fragment" >
+        <action
+            android:id="@+id/action_welcome_fragment_to_game_Fragment"
+            app:destination="@id/game_Fragment" />
+        <action
+            android:id="@+id/action_welcome_fragment_to_history_Fragment"
+            app:destination="@id/history_Fragment" />
+        <action
+            android:id="@+id/action_welcome_fragment_to_settings_Fragment"
+            app:destination="@id/settings_Fragment" />
+        <action
+            android:id="@+id/action_welcome_fragment_self"
+            app:destination="@id/welcome_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game_Fragment"
+        android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.Game_Fragment"
+        android:label="Game_Fragment" >
+        <action
+            android:id="@+id/action_game_Fragment_to_history_Fragment"
+            app:destination="@id/history_Fragment" />
+        <action
+            android:id="@+id/action_game_Fragment_to_settings_Fragment"
+            app:destination="@id/settings_Fragment" />
+        <action
+            android:id="@+id/action_game_Fragment_to_welcome_fragment"
+            app:destination="@id/welcome_fragment" />
+        <action
+            android:id="@+id/action_game_Fragment_self"
+            app:destination="@id/game_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/history_Fragment"
+        android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.History_Fragment"
+        android:label="History_Fragment" >
+        <action
+            android:id="@+id/action_history_Fragment_to_game_Fragment"
+            app:destination="@id/game_Fragment" />
+        <action
+            android:id="@+id/action_history_Fragment_to_settings_Fragment"
+            app:destination="@id/settings_Fragment" />
+        <action
+            android:id="@+id/action_history_Fragment_to_welcome_fragment"
+            app:destination="@id/welcome_fragment" />
+        <action
+            android:id="@+id/action_history_Fragment_self"
+            app:destination="@id/history_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings_Fragment"
+        android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.Settings_Fragment"
+        android:label="Settings_Fragment" >
+        <action
+            android:id="@+id/action_settings_Fragment_to_history_Fragment"
+            app:destination="@id/history_Fragment" />
+        <action
+            android:id="@+id/action_settings_Fragment_to_game_Fragment"
+            app:destination="@id/game_Fragment" />
+        <action
+            android:id="@+id/action_settings_Fragment_to_welcome_fragment"
+            app:destination="@id/welcome_fragment" />
+        <action
+            android:id="@+id/action_settings_Fragment_self"
+            app:destination="@id/settings_Fragment" />
+    </fragment>
+</navigation>
