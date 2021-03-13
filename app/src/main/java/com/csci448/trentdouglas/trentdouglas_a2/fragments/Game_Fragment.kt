@@ -14,7 +14,7 @@ import com.csci448.trentdouglas.trentdouglas_a2.databinding.WelcomeFragmentBindi
 class Game_Fragment: Fragment() {
     private var _binding: GameFragmentBinding? = null
 
-    private val oneUsed = false
+    var used_list = mutableListOf(false, false, false, false, false, false, false, false, false)
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
@@ -25,36 +25,70 @@ class Game_Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = GameFragmentBinding.inflate(inflater, container, false)
-
+        used_list = mutableListOf(false, false, false, false, false, false, false, false, false)
         binding.one.setOnClickListener {
-            binding.one.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[0]){
+                binding.one.background = resources.getDrawable(R.drawable.ex)
+                used_list[0] = true
+                computer_play()
+            }
         }
         binding.two.setOnClickListener {
-            binding.two.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[1]){
+                binding.two.background = resources.getDrawable(R.drawable.ex)
+                used_list[1] = true
+                computer_play()
+            }
         }
         binding.three.setOnClickListener {
-            binding.three.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[2]){
+                binding.three.background = resources.getDrawable(R.drawable.ex)
+                used_list[2] = true
+                computer_play()
+            }
         }
         binding.four.setOnClickListener {
-            binding.four.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[3]){
+                binding.four.background = resources.getDrawable(R.drawable.ex)
+                used_list[3] = true
+                computer_play()
+            }
         }
         binding.five.setOnClickListener {
-            binding.five.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[4]){
+                binding.five.background = resources.getDrawable(R.drawable.ex)
+                used_list[4] = true
+                computer_play()
+            }
         }
         binding.six.setOnClickListener {
-            binding.six.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[5]){
+                binding.six.background = resources.getDrawable(R.drawable.ex)
+                used_list[5] = true
+                computer_play()
+            }
         }
         binding.seven.setOnClickListener {
-            binding.seven.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[6]){
+                binding.seven.background = resources.getDrawable(R.drawable.ex)
+                used_list[6] = true
+                computer_play()
+            }
         }
         binding.eight.setOnClickListener {
-            binding.eight.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[7]){
+                binding.eight.background = resources.getDrawable(R.drawable.ex)
+                used_list[7] = true
+                computer_play()
+            }
         }
         binding.nine.setOnClickListener {
-            binding.nine.background = resources.getDrawable(R.drawable.ex)
+            if(!used_list[8]){
+                binding.nine.background = resources.getDrawable(R.drawable.ex)
+                used_list[8] = true
+                computer_play()
+            }
         }
-
-
 
 
 
@@ -63,6 +97,60 @@ class Game_Fragment: Fragment() {
     }
 
 
+    fun computer_play(){
+        var count = 0
+        var used_count = 0
+        while (count < 9){
+            if(used_list[count]){
+                used_count++
+            }
+            count++
+        }
+        if(used_count == 9) return
+
+        var choice = (0..8).random()
+        while (used_list[choice]){
+            choice = (0..8).random()
+        }
+        if(choice == 0) {
+            binding.one.background = resources.getDrawable(R.drawable.oh)
+            used_list[0] = true
+        }
+        if(choice == 1) {
+            binding.two.background = resources.getDrawable(R.drawable.oh)
+            used_list[1] = true
+        }
+        if(choice == 2) {
+            binding.three.background = resources.getDrawable(R.drawable.oh)
+            used_list[2] = true
+        }
+        if(choice == 3) {
+            binding.four.background = resources.getDrawable(R.drawable.oh)
+            used_list[3] = true
+        }
+        if(choice == 4) {
+            binding.five.background = resources.getDrawable(R.drawable.oh)
+            used_list[4] = true
+        }
+        if(choice == 5) {
+            binding.six.background = resources.getDrawable(R.drawable.oh)
+            used_list[5] = true
+        }
+        if(choice == 6) {
+            binding.seven.background = resources.getDrawable(R.drawable.oh)
+            used_list[6] = true
+        }
+        if(choice == 7) {
+            binding.eight.background = resources.getDrawable(R.drawable.oh)
+            used_list[7] = true
+        }
+        if(choice == 8) {
+            binding.nine.background = resources.getDrawable(R.drawable.oh)
+            used_list[8] = true
+        }
+
+
+    }
 
 
 
