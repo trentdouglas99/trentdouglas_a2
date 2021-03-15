@@ -9,9 +9,8 @@ class GameHolder(val binding: ListItemGameBinding) : RecyclerView.ViewHolder(bin
 
     private lateinit var game: Game
 
-    fun bind(game: Game, clickListener: (Game) -> Unit ) {
+    fun bind(game: Game) {
         this.game = game
-        //itemView.setOnClickListener { clickListener(this.game) }
         binding.gameWinner.text = this.game.winner
         binding.gameDateTextView.text = this.game.date.toString()
     }

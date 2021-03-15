@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.csci448.trentdouglas.trentdouglas_a2.Game
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.ListItemGameBinding
 
-class HistoryListAdapter(private val games: List<Game>, private val clickListener: (Game) -> Unit ) : RecyclerView.Adapter<GameHolder>() {
+class HistoryListAdapter(private val games: List<Game>) : RecyclerView.Adapter<GameHolder>() {
 
     override fun getItemCount(): Int{
         return games.size
@@ -20,7 +20,7 @@ class HistoryListAdapter(private val games: List<Game>, private val clickListene
 
     override fun onBindViewHolder(holder: GameHolder, position: Int) {
         val game = games[position]
-        holder.bind(game, clickListener)
+        holder.bind(game)
     }
 
 }

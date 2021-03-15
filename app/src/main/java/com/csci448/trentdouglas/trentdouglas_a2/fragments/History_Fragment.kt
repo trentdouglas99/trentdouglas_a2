@@ -41,6 +41,7 @@ class History_Fragment: Fragment() {
         _binding = FragmentListBinding.inflate(inflater, container, false)
 
         binding.gameListRecyclerView.layoutManager = LinearLayoutManager(context)
+
         updateUI(emptyList())
 
         return binding.root
@@ -54,16 +55,19 @@ class History_Fragment: Fragment() {
             Observer { games ->
                 games?.let{
                     Log.i(LOG_TAG, "Got games ${games.size}")
+                    updateUI(games)
                 }
             }
         )
     }
     private fun updateUI(games: List<Game>) {
-        adapter = HistoryListAdapter(games) { game: Game ->
+        //adapter = HistoryListAdapter(games) { game: Game ->
             //val action = CrimeListFragmentDirections.actionCrimeListFragmentToCrimeDetailFragment(crime.id)
             //findNavController().navigate(action)
 
-        }
+        //}
+
+        adapter = HistoryListAdapter(games)
         binding.gameListRecyclerView.adapter = adapter
     }
 
@@ -101,16 +105,6 @@ class History_Fragment: Fragment() {
 
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-    override fun onAttach(context: Context){
-        super.onAttach(context)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -125,16 +119,15 @@ class History_Fragment: Fragment() {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?){
+        Log.d(LOG_TAG, "onActivityCreated() called")
         super.onActivityCreated(savedInstanceState)
     }
-
-
     override fun onStart(){
+        Log.d(LOG_TAG, "onStart() called")
         super.onStart()
+
     }
-
-
     override fun onResume(){
         Log.d(LOG_TAG, "onResume() called")
         super.onResume()
@@ -147,10 +140,14 @@ class History_Fragment: Fragment() {
         Log.d(LOG_TAG, "onStop() called")
         super.onStop()
     }
-
+    override fun onDestroyView(){
+        Log.d(LOG_TAG, "onDestroyView() called")
+        super.onDestroyView()
+    }
     override fun onDestroy(){
         Log.d(LOG_TAG, "onDestroy() called")
         super.onDestroy()
+        _binding = null
     }
     override fun onDetach(){
         Log.d(LOG_TAG, "onDetach() called")
