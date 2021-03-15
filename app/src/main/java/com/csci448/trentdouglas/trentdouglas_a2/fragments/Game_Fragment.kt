@@ -172,6 +172,23 @@ class Game_Fragment: Fragment() {
         if(computer_chose.contains(0) && computer_chose.contains(4) && computer_chose.contains(8)) computer_wins = true
         if(computer_chose.contains(6) && computer_chose.contains(4) && computer_chose.contains(2)) computer_wins = true
 
+        var count = 0
+        var used_count = 0
+        while (count < 9) {
+            if (used_list[count]) {
+                used_count++
+            }
+            count++
+        }
+        if (used_count == 9){
+            Toast.makeText(requireContext(), "Draw!", Toast.LENGTH_SHORT).show()
+            val game = Game()
+            game_over = true
+            game.winner = "Draw"
+            game_Fragment_View_Model.addGame(game)
+        }
+
+
         if(player_wins){
             Toast.makeText(requireContext(), "Player Wins!", Toast.LENGTH_SHORT).show()
             val game = Game()
