@@ -7,10 +7,13 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.csci448.trentdouglas.trentdouglas_a2.Game
 import com.csci448.trentdouglas.trentdouglas_a2.R
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.GameFragmentBinding
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.WelcomeFragmentBinding
+import com.csci448.trentdouglas.trentdouglas_a2.repo.GameRepository
 
 class Game_Fragment: Fragment() {
     private var _binding: GameFragmentBinding? = null
@@ -22,6 +25,7 @@ class Game_Fragment: Fragment() {
     var player_wins = false
     var computer_wins = false
     var game_over = false
+    private lateinit var game_Fragment_View_Model: Game_Fragment_View_Model
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
@@ -170,11 +174,17 @@ class Game_Fragment: Fragment() {
 
         if(player_wins){
             Toast.makeText(requireContext(), "Player Wins!", Toast.LENGTH_SHORT).show()
+            val game = Game()
             game_over = true
+            game.winner = "Player"
+            game_Fragment_View_Model.addGame(game)
         }
         if(computer_wins){
             Toast.makeText(requireContext(), "Computer Wins!", Toast.LENGTH_SHORT).show()
+            val game = Game()
             game_over = true
+            game.winner = "Computer"
+            game_Fragment_View_Model.addGame(game)
         }
 
     }
@@ -260,7 +270,10 @@ class Game_Fragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
+        val factory = Game_Fragment_View_Model_Factory(requireContext())
+        game_Fragment_View_Model = ViewModelProvider(this, factory).get(Game_Fragment_View_Model::class.java)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

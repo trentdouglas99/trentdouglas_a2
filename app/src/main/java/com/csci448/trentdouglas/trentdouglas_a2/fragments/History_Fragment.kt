@@ -1,29 +1,70 @@
 package com.csci448.trentdouglas.trentdouglas_a2.fragments
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.csci448.trentdouglas.trentdouglas_a2.Game
 import com.csci448.trentdouglas.trentdouglas_a2.R
+import com.csci448.trentdouglas.trentdouglas_a2.databinding.FragmentListBinding
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.GameFragmentBinding
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.HistoryFragmentBinding
 
 class History_Fragment: Fragment() {
 
-    private var _binding: HistoryFragmentBinding? = null
-
+    private var _binding: FragmentListBinding? = null
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
+    private lateinit var historyListViewModel: HistoryListViewModel
+
+    private lateinit var adapter: HistoryListAdapter
     private val LOG_TAG = "A2 history fragment "
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = HistoryFragmentBinding.inflate(inflater, container, false)
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        _binding = FragmentListBinding.inflate(inflater, container, false)
+//        return binding.root
+//    }
+
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
+        Log.d(LOG_TAG, "onCreateView() called")
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+
+        binding.gameListRecyclerView.layoutManager = LinearLayoutManager(context)
+        updateUI(emptyList())
+
         return binding.root
+
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+        Log.d(LOG_TAG, "onViewCreated() called")
+        super.onViewCreated(view, savedInstanceState)
+        historyListViewModel.gameListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { games ->
+                games?.let{
+                    Log.i(LOG_TAG, "Got games ${games.size}")
+                }
+            }
+        )
+    }
+    private fun updateUI(games: List<Game>) {
+        adapter = HistoryListAdapter(games) { game: Game ->
+            //val action = CrimeListFragmentDirections.actionCrimeListFragmentToCrimeDetailFragment(crime.id)
+            //findNavController().navigate(action)
+
+        }
+        binding.gameListRecyclerView.adapter = adapter
     }
 
 
@@ -73,6 +114,8 @@ class History_Fragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        val factory = HistoryListViewModelFactory(requireContext())
+        historyListViewModel = ViewModelProvider(this@History_Fragment, factory).get(HistoryListViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -81,9 +124,7 @@ class History_Fragment: Fragment() {
         inflater.inflate(R.menu.fragment_menu_bar, menu)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
-        super.onViewCreated(view, savedInstanceState)
-    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }

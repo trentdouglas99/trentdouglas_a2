@@ -9,4 +9,6 @@ class Settings_Fragment: PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
     }
 
+    //override fun onSharedPreferenceChanged()
+
 }
