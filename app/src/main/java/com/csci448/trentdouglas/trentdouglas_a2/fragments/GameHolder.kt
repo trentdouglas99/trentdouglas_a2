@@ -11,7 +11,7 @@ class GameHolder(val binding: ListItemGameBinding) : RecyclerView.ViewHolder(bin
 
     fun bind(game: Game, clickListener: (Game) -> Unit ) {
         this.game = game
-        itemView.setOnClickListener { clickListener(this.game) }
+        //itemView.setOnClickListener { clickListener(this.game) }
         binding.gameWinner.text = this.game.winner
         binding.gameDateTextView.text = this.game.date.toString()
     }
