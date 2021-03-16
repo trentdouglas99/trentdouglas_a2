@@ -10,6 +10,12 @@
         android:defaultValue="false"
         android:key="smart_joe"
         android:title="Smart Joe (Joe Goes First)" />
+    <SwitchPreference
+        android:enabled="true"
+        android:defaultValue="false"
+
+        android:key="clear_data"
+        android:title="Clear Data" />
 
 
 </PreferenceScreen>

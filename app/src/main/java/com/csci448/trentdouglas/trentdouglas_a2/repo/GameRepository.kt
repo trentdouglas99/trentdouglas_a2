@@ -37,6 +37,11 @@ class GameRepository private constructor (private val gameDao: GameDao) {
             gameDao.updateGame(game)
         }
     }
+    fun clearData(){
+        executor.execute{
+            gameDao.clearData()
+        }
+    }
 
 
 }

@@ -10,7 +10,7 @@ import java.util.*
 
 class GameFragmentViewModel (private val gameRepository: GameRepository) : ViewModel(){
     private val gameIdLiveData = MutableLiveData <UUID>()
-
+    public var gameRepo = gameRepository
     public var games = mutableListOf<Boolean>(false, false, false, false, false, false, false, false, false)
     public var playerChose = mutableListOf<Int>()
     public var computerChose = mutableListOf<Int>()

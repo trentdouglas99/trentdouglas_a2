@@ -7,7 +7,7 @@ import com.csci448.trentdouglas.trentdouglas_a2.repo.GameRepository
 class HistoryListViewModel (private val gameRepository: GameRepository) : ViewModel() {
     val gameListLiveData = gameRepository.getGames()
 
-    fun addCrime(game: Game) {
+    fun addGame(game: Game) {
         gameRepository.addGame(game)
     }
 
