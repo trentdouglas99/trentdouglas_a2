@@ -6,6 +6,10 @@
         android:key="dark_mode"
 
         android:title="Dark Mode" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="smart_joe"
+        android:title="Smart Joe (Joe Goes First)" />
 
 
 </PreferenceScreen>
