@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.csci448.trentdouglas.trentdouglas_a2.Game
 import com.csci448.trentdouglas.trentdouglas_a2.R
@@ -42,6 +43,8 @@ class History_Fragment: Fragment() {
 
         binding.gameListRecyclerView.layoutManager = LinearLayoutManager(context)
 
+
+
         updateUI(emptyList())
 
         return binding.root
@@ -67,7 +70,7 @@ class History_Fragment: Fragment() {
 
         //}
 
-        adapter = HistoryListAdapter(games)
+        adapter = HistoryListAdapter(games, context)
         binding.gameListRecyclerView.adapter = adapter
     }
 
@@ -77,11 +80,6 @@ class History_Fragment: Fragment() {
 
         if (item.itemId == R.id.play_game) {
             val action = History_FragmentDirections.actionHistoryFragmentToGameFragment()
-            findNavController().navigate(action)
-            return true
-        }
-        if (item.itemId == R.id.history) {
-            val action = History_FragmentDirections.actionHistoryFragmentSelf()
             findNavController().navigate(action)
             return true
         }
@@ -115,7 +113,7 @@ class History_Fragment: Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         Log.d(LOG_TAG, "onCreateOptionsMenu() called")
-        inflater.inflate(R.menu.fragment_menu_bar, menu)
+        inflater.inflate(R.menu.fragment_menu_bar_no_history, menu)
     }
 
 

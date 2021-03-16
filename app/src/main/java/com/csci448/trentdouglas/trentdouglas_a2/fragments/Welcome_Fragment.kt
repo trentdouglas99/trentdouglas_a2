@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.csci448.trentdouglas.trentdouglas_a2.MainActivity
 import com.csci448.trentdouglas.trentdouglas_a2.R
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.WelcomeFragmentBinding
@@ -23,6 +24,15 @@ class Welcome_Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = WelcomeFragmentBinding.inflate(inflater, container, false)
+
+        var sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        var darkMode = sharedPref.getBoolean("dark_mode", false)
+        if(darkMode){
+            if (context != null) {
+                binding.background.setBackgroundColor(getResources().getColor(R.color.black))
+            }
+        }
+
         return binding.root
     }
 

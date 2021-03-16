@@ -1,19 +1,19 @@
 package com.csci448.trentdouglas.trentdouglas_a2.fragments
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.csci448.trentdouglas.trentdouglas_a2.Game
 import com.csci448.trentdouglas.trentdouglas_a2.R
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.GameFragmentBinding
-import com.csci448.trentdouglas.trentdouglas_a2.databinding.WelcomeFragmentBinding
-import com.csci448.trentdouglas.trentdouglas_a2.repo.GameRepository
 
 class Game_Fragment: Fragment() {
     private var _binding: GameFragmentBinding? = null
@@ -25,19 +25,29 @@ class Game_Fragment: Fragment() {
     var player_wins = false
     var computer_wins = false
     var game_over = false
-    private lateinit var game_Fragment_View_Model: Game_Fragment_View_Model
+    private lateinit var game_Fragment_View_Model: GameFragmentViewModel
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
     private val LOG_TAG = "A2 game fragment "
     override fun onCreateView(
-
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        var sharedPref = getDefaultSharedPreferences(context)
+        var darkMode = sharedPref.getBoolean("dark_mode", false)
+
+
+
         _binding = GameFragmentBinding.inflate(inflater, container, false)
-        used_list = mutableListOf(false, false, false, false, false, false, false, false, false)
+
+        if(darkMode){
+            binding.background.setBackgroundColor(resources.getColor(R.color.black))
+        }
+
+        used_list = mutableListOf<Boolean>(false, false, false, false, false, false, false, false, false)
         binding.one.setOnClickListener {
             if(!game_over) {
                 if (!used_list[0]) {
@@ -46,6 +56,7 @@ class Game_Fragment: Fragment() {
                     player_chose.add(0)
                     check_for_win()
                     computer_play()
+
                 }
             }
         }
@@ -57,6 +68,7 @@ class Game_Fragment: Fragment() {
                     player_chose.add(1)
                     check_for_win()
                     computer_play()
+
                 }
             }
 
@@ -69,6 +81,7 @@ class Game_Fragment: Fragment() {
                     player_chose.add(2)
                     check_for_win()
                     computer_play()
+
                 }
             }
 
@@ -81,6 +94,7 @@ class Game_Fragment: Fragment() {
                     player_chose.add(3)
                     check_for_win()
                     computer_play()
+
                 }
             }
 
@@ -93,6 +107,7 @@ class Game_Fragment: Fragment() {
                     player_chose.add(4)
                     check_for_win()
                     computer_play()
+
                 }
             }
 
@@ -105,13 +120,14 @@ class Game_Fragment: Fragment() {
                     player_chose.add(5)
                     check_for_win()
                     computer_play()
+
                 }
             }
 
         }
         binding.seven.setOnClickListener {
             if(!game_over){
-                if(!used_list[6]){
+                if(!used_list[6]) {
                     binding.seven.background = resources.getDrawable(R.drawable.ex)
                     used_list[6] = true
                     player_chose.add(6)
@@ -128,8 +144,8 @@ class Game_Fragment: Fragment() {
                     used_list[7] = true
                     player_chose.add(7)
                     check_for_win()
-
                     computer_play()
+
                 }
             }
 
@@ -142,9 +158,18 @@ class Game_Fragment: Fragment() {
                     player_chose.add(8)
                     check_for_win()
                     computer_play()
+
                 }
             }
 
+        }
+        binding.back.setOnClickListener {
+            val action = Game_FragmentDirections.actionGameFragmentToWelcomeFragment()
+            findNavController().navigate(action)
+        }
+        binding.playAgain.setOnClickListener {
+            val action = Game_FragmentDirections.actionGameFragmentSelf()
+            findNavController().navigate(action)
         }
 
 
@@ -186,6 +211,8 @@ class Game_Fragment: Fragment() {
             game_over = true
             game.winner = "Draw"
             game_Fragment_View_Model.addGame(game)
+            binding.back.visibility = View.VISIBLE
+            binding.playAgain.visibility = View.VISIBLE
         }
 
 
@@ -195,6 +222,8 @@ class Game_Fragment: Fragment() {
             game_over = true
             game.winner = "Player"
             game_Fragment_View_Model.addGame(game)
+            binding.back.visibility = View.VISIBLE
+            binding.playAgain.visibility = View.VISIBLE
         }
         if(computer_wins){
             Toast.makeText(requireContext(), "Computer Wins!", Toast.LENGTH_SHORT).show()
@@ -202,6 +231,8 @@ class Game_Fragment: Fragment() {
             game_over = true
             game.winner = "Computer"
             game_Fragment_View_Model.addGame(game)
+            binding.back.visibility = View.VISIBLE
+            binding.playAgain.visibility = View.VISIBLE
         }
 
     }
@@ -277,6 +308,7 @@ class Game_Fragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(LOG_TAG, "onDestroyView() called")
         _binding = null
     }
 
@@ -288,8 +320,8 @@ class Game_Fragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
-        val factory = Game_Fragment_View_Model_Factory(requireContext())
-        game_Fragment_View_Model = ViewModelProvider(this, factory).get(Game_Fragment_View_Model::class.java)
+        val factory = GameFragmentViewModelFactory(requireContext())
+        game_Fragment_View_Model = ViewModelProvider(this, factory).get(GameFragmentViewModel::class.java)
 
     }
 
@@ -312,7 +344,42 @@ class Game_Fragment: Fragment() {
 
 
     override fun onResume(){
-        Log.d(LOG_TAG, "onResume() called")
+        Log.d(LOG_TAG, "onResume()")
+        game_over = game_Fragment_View_Model.gameOver
+        used_list = game_Fragment_View_Model.games
+        player_chose = game_Fragment_View_Model.playerChose
+        computer_chose = game_Fragment_View_Model.computerChose
+
+        if(game_over){
+            binding.back.visibility = View.VISIBLE
+            binding.playAgain.visibility = View.VISIBLE
+        }
+
+        for (index in player_chose){
+            if(index == 0) binding.one.background = resources.getDrawable(R.drawable.ex)
+            if(index == 1) binding.two.background = resources.getDrawable(R.drawable.ex)
+            if(index == 2) binding.three.background = resources.getDrawable(R.drawable.ex)
+            if(index == 3) binding.four.background = resources.getDrawable(R.drawable.ex)
+            if(index == 4) binding.five.background = resources.getDrawable(R.drawable.ex)
+            if(index == 5) binding.six.background = resources.getDrawable(R.drawable.ex)
+            if(index == 6) binding.seven.background = resources.getDrawable(R.drawable.ex)
+            if(index == 7) binding.eight.background = resources.getDrawable(R.drawable.ex)
+            if(index == 8) binding.nine.background = resources.getDrawable(R.drawable.ex)
+        }
+
+
+        for (index in computer_chose){
+            if(index == 0) binding.one.background = resources.getDrawable(R.drawable.oh)
+            if(index == 1) binding.two.background = resources.getDrawable(R.drawable.oh)
+            if(index == 2) binding.three.background = resources.getDrawable(R.drawable.oh)
+            if(index == 3) binding.four.background = resources.getDrawable(R.drawable.oh)
+            if(index == 4) binding.five.background = resources.getDrawable(R.drawable.oh)
+            if(index == 5) binding.six.background = resources.getDrawable(R.drawable.oh)
+            if(index == 6) binding.seven.background = resources.getDrawable(R.drawable.oh)
+            if(index == 7) binding.eight.background = resources.getDrawable(R.drawable.oh)
+            if(index == 8) binding.nine.background = resources.getDrawable(R.drawable.oh)
+        }
+
         super.onResume()
     }
     override fun onPause(){
@@ -326,6 +393,10 @@ class Game_Fragment: Fragment() {
 
     override fun onDestroy(){
         Log.d(LOG_TAG, "onDestroy() called")
+        game_Fragment_View_Model.gameOver = game_over
+        game_Fragment_View_Model.games = used_list
+        game_Fragment_View_Model.playerChose = player_chose
+        game_Fragment_View_Model.computerChose = computer_chose
         super.onDestroy()
     }
     override fun onDetach(){
