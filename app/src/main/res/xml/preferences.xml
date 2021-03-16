@@ -10,7 +10,7 @@
         android:defaultValue="false"
         android:key="smart_joe"
         android:title="Smart Joe (Joe Goes First)" />
-    <SwitchPreference
+    <Preference
         android:enabled="true"
         android:defaultValue="false"
 

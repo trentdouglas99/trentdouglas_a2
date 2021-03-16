@@ -1,12 +1,14 @@
 package com.csci448.trentdouglas.trentdouglas_a2.fragments
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
@@ -14,12 +16,13 @@ import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.csci448.trentdouglas.trentdouglas_a2.Game
 import com.csci448.trentdouglas.trentdouglas_a2.R
 import com.csci448.trentdouglas.trentdouglas_a2.databinding.GameFragmentBinding
+import com.csci448.trentdouglas.trentdouglas_a2.repo.GameRepository
+import android.graphics.drawable.Drawable
 
 class Game_Fragment: Fragment() {
     private var _binding: GameFragmentBinding? = null
     private var move = 1
     var used_list = mutableListOf(false, false, false, false, false, false, false, false, false)
-
     var player_chose = mutableListOf<Int>()
     var computer_chose = mutableListOf<Int>()
     var player_wins = false
@@ -36,7 +39,6 @@ class Game_Fragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        move = 1
 
         var sharedPref = getDefaultSharedPreferences(context)
         var darkMode = sharedPref.getBoolean("dark_mode", false)
@@ -49,9 +51,31 @@ class Game_Fragment: Fragment() {
             binding.background.setBackgroundColor(resources.getColor(R.color.black))
         }
 
+        binding.one.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.two.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.three.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.four.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.five.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.six.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.seven.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.eight.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+        binding.nine.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+
+        move = 1
+        used_list = mutableListOf(false, false, false, false, false, false, false, false, false)
+        player_chose = mutableListOf<Int>()
+        computer_chose = mutableListOf<Int>()
+        player_wins = false
+        computer_wins = false
+        game_over = false
+
+        game_Fragment_View_Model.gameOver = game_over
+        game_Fragment_View_Model.games = used_list
+        game_Fragment_View_Model.playerChose = player_chose
+        game_Fragment_View_Model.computerChose = computer_chose
+        if(smartJoe) smart_joe_play()
 
 
-        used_list = mutableListOf<Boolean>(false, false, false, false, false, false, false, false, false)
         binding.one.setOnClickListener {
             if(!game_over) {
                 if (!used_list[0]) {
@@ -181,8 +205,29 @@ class Game_Fragment: Fragment() {
             findNavController().navigate(action)
         }
         binding.playAgain.setOnClickListener {
-            val action = Game_FragmentDirections.actionGameFragmentSelf()
-            findNavController().navigate(action)
+            binding.one.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.two.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.three.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.four.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.five.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.six.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.seven.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.eight.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+            binding.nine.background = (ColorDrawable(resources.getColor(R.color.purple_500)))
+
+            move = 1
+            used_list = mutableListOf(false, false, false, false, false, false, false, false, false)
+            player_chose = mutableListOf<Int>()
+            computer_chose = mutableListOf<Int>()
+            player_wins = false
+            computer_wins = false
+            game_over = false
+
+            game_Fragment_View_Model.gameOver = game_over
+            game_Fragment_View_Model.games = used_list
+            game_Fragment_View_Model.playerChose = player_chose
+            game_Fragment_View_Model.computerChose = computer_chose
+            if(smartJoe) smart_joe_play()
         }
 
 
@@ -229,7 +274,7 @@ class Game_Fragment: Fragment() {
         }
 
 
-        if(player_wins){
+        else if(player_wins){
             Toast.makeText(requireContext(), "Player Wins!", Toast.LENGTH_SHORT).show()
             val game = Game()
             game_over = true
@@ -238,7 +283,7 @@ class Game_Fragment: Fragment() {
             binding.back.visibility = View.VISIBLE
             binding.playAgain.visibility = View.VISIBLE
         }
-        if(computer_wins){
+        else if(computer_wins){
             var sharedPref = getDefaultSharedPreferences(context)
             var smartJoe = sharedPref.getBoolean("smart_joe", false)
 
@@ -254,6 +299,7 @@ class Game_Fragment: Fragment() {
             binding.back.visibility = View.VISIBLE
             binding.playAgain.visibility = View.VISIBLE
         }
+
 
     }
 
@@ -325,6 +371,14 @@ class Game_Fragment: Fragment() {
             if(player_chose.contains(6) && player_chose.contains(2) && !computer_chose.contains(4)) choice = 4
             if(player_chose.contains(6) && player_chose.contains(4) && !computer_chose.contains(2)) choice = 2
 
+
+            if(choice == 6 && move != 1){
+                choice = (0..8).random()
+                while (used_list[choice]) {
+                    choice = (0..8).random()
+                }
+            }
+
             if(computer_chose.contains(6) && computer_chose.contains(8) && !player_chose.contains(7)) choice = 7
             if(computer_chose.contains(6) && computer_chose.contains(0) && !player_chose.contains(3)) choice = 3
             if(computer_chose.contains(6) && computer_chose.contains(2) && !player_chose.contains(4)) choice = 4
@@ -332,14 +386,6 @@ class Game_Fragment: Fragment() {
             if(computer_chose.contains(6) && computer_chose.contains(4) && !player_chose.contains(2)) choice = 2
             if(computer_chose.contains(6) && computer_chose.contains(7) && !player_chose.contains(8)) choice = 8
             if(computer_chose.contains(2) && computer_chose.contains(8) && !player_chose.contains(5)) choice = 5
-
-
-            else if(choice == 6 && move != 1){
-                choice = (0..8).random()
-                while (used_list[choice]) {
-                    choice = (0..8).random()
-                }
-            }
 
             move++
 
@@ -391,9 +437,9 @@ class Game_Fragment: Fragment() {
                 used_list[8] = true
                 computer_chose.add(8)
             }
-            check_for_win()
-        }
 
+        }
+        check_for_win()
     }
 
 
@@ -497,20 +543,49 @@ class Game_Fragment: Fragment() {
     }
 
 
-    override fun onStart(){
+    override fun onStart() {
         super.onStart()
     }
 
 
     override fun onResume(){
+        var repo = GameRepository.getInstance(requireContext())
+        var wins = repo.getStats("Player")
+        var losses = repo.getTwoStats("Smart Joe", "Average Joe")
+        var draws = repo.getStats("Draw")
+
+
+        wins.observe(viewLifecycleOwner, Observer { count ->
+            count?.let {
+                binding.wins.text = count.toString()
+            }
+        })
+        losses.observe(viewLifecycleOwner, Observer { count ->
+            count?.let {
+                binding.losses.text = count.toString()
+            }
+        })
+
+        draws.observe(viewLifecycleOwner, Observer { count ->
+            count?.let {
+                binding.draws.text = count.toString()
+            }
+        })
+
+
+
+
+        //binding.wins.text = length as String
         var sharedPref = getDefaultSharedPreferences(context)
         var smartJoe = sharedPref.getBoolean("smart_joe", false)
+
         Log.d(LOG_TAG, "onResume()")
         game_over = game_Fragment_View_Model.gameOver
         used_list = game_Fragment_View_Model.games
         player_chose = game_Fragment_View_Model.playerChose
         computer_chose = game_Fragment_View_Model.computerChose
-        if(smartJoe) smart_joe_play()
+
+
 
         if(game_over){
             binding.back.visibility = View.VISIBLE

@@ -8,6 +8,10 @@
     <string name="history">History</string>
     <string name="key">key</string>
     <string name="welcome">Tic Tac Joe</string>
+    <string name="can_you_beat_joe">Can You Beat Joe?</string>
+    <string name="wins">Wins\u0020</string>
+    <string name="losses">Losses\u0020</string>
+    <string name="draws">Draws\u0020</string>
 
 
 </resources>

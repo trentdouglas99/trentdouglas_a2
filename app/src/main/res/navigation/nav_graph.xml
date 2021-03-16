@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/welcome_fragment"
         android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.Welcome_Fragment"
-        android:label="welcome_fragment" >
+        android:label="\u0020">
         <action
             android:id="@+id/action_welcome_fragment_to_game_Fragment"
             app:destination="@id/game_Fragment" />
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/game_Fragment"
         android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.Game_Fragment"
-        android:label="Game_Fragment" >
+        android:label="\u0020">
         <action
             android:id="@+id/action_game_Fragment_to_history_Fragment"
             app:destination="@id/history_Fragment" />
@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/history_Fragment"
         android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.History_Fragment"
-        android:label="History_Fragment" >
+        android:label="History">
         <action
             android:id="@+id/action_history_Fragment_to_game_Fragment"
             app:destination="@id/game_Fragment" />
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/settings_Fragment"
         android:name="com.csci448.trentdouglas.trentdouglas_a2.fragments.Settings_Fragment"
-        android:label="Settings_Fragment" >
+        android:label="Preferences">
         <action
             android:id="@+id/action_settings_Fragment_to_history_Fragment"
             app:destination="@id/history_Fragment" />

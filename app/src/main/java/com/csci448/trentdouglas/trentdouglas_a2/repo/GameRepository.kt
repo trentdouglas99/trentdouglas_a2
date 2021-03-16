@@ -11,6 +11,8 @@ import java.util.concurrent.Executors
 class GameRepository private constructor (private val gameDao: GameDao) {
     fun getGames(): LiveData<List<Game>> = gameDao.getGames()
     fun getGame(id: UUID): LiveData<Game?> = gameDao.getGame(id)
+    fun getStats(type:String): LiveData<Int> = gameDao.getStats(type)
+    fun getTwoStats(type_one:String, type_two: String): LiveData<Int> = gameDao.getTwoStats(type_one, type_two)
     private val executor = Executors.newSingleThreadExecutor()
     companion object {
         private var INSTANCE: GameRepository? = null
@@ -42,6 +44,7 @@ class GameRepository private constructor (private val gameDao: GameDao) {
             gameDao.clearData()
         }
     }
+
 
 
 }

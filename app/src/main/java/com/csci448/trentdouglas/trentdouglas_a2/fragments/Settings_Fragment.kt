@@ -13,7 +13,7 @@ class Settings_Fragment: PreferenceFragmentCompat() {
 
     private lateinit var sharedPref:SharedPreferences
     private lateinit var clearData:Preference
-    private val LOG_TAG = "testing"
+    private val LOG_TAG = "preferences"
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val gameRepository: GameRepository = GameRepository.getInstance(requireContext())
